@@ -15,7 +15,7 @@ export function LoginForm() {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
+    <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(31,25,48,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
       <div className="space-y-6">
         <div className="space-y-4">
           <Link href="/" className="inline-flex w-fit">
@@ -73,10 +73,7 @@ export function LoginForm() {
 
           <div className="flex items-center justify-between gap-4">
             <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-              <input
-                type="checkbox"
-                className="size-4 rounded border-border text-primary focus:ring-ring"
-              />
+              <input type="checkbox" className="size-4 rounded border-border text-primary focus:ring-ring" />
               Remember Me
             </label>
             <button
@@ -87,7 +84,7 @@ export function LoginForm() {
             </button>
           </div>
 
-          <Button type="button" size="lg" className="w-full bg-[#2563EB] text-white hover:bg-[#1D4ED8]">
+          <Button type="button" size="lg" className="w-full">
             Sign In
           </Button>
 

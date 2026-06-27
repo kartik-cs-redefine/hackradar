@@ -26,8 +26,8 @@ export function Navbar() {
   const navbarTone = isScrolled
     ? {
         shell: isDark
-          ? "border-b border-white/10 bg-zinc-950/90 shadow-sm backdrop-blur-md"
-          : "border-b border-border/70 bg-white/90 shadow-sm backdrop-blur-md",
+          ? "border-b border-border/70 bg-background/90 shadow-sm backdrop-blur-md"
+          : "border-b border-border/70 bg-background/90 shadow-sm backdrop-blur-md",
         text: isDark ? "text-white" : "text-foreground",
         icon: isDark ? "text-white" : "text-foreground",
         signIn: isDark ? "text-white" : "text-foreground",
@@ -152,7 +152,7 @@ export function Navbar() {
               Sign In
             </Link>
           </Button>
-          <Button asChild className="bg-[#2563EB] text-white hover:bg-[#1D4ED8] hover:text-white">
+          <Button asChild>
             <Link href="/profile" className="text-white hover:text-white">
               User
             </Link>

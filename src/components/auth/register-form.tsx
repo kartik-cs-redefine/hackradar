@@ -212,7 +212,7 @@ export function RegisterForm() {
     passwordValue === confirmPassword;
 
   return (
-    <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(0,0,0,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
+    <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(31,25,48,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
       <div className="space-y-6">
         <div className="space-y-4">
           <Link href="/" className="inline-flex w-fit">
@@ -335,7 +335,7 @@ export function RegisterForm() {
           <Button
             type="submit"
             size="lg"
-            className="w-full bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white shadow-[0_10px_30px_rgba(37,99,235,0.25)] transition-transform hover:translate-y-[-1px] hover:from-[#1D4ED8] hover:to-[#1E40AF]"
+            className="w-full"
             disabled={!isFormValid || form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (

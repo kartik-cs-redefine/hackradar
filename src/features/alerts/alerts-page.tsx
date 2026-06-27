@@ -101,7 +101,7 @@ function RadioItem({
       className={cn(
         "rounded-2xl border px-4 py-3 text-left text-sm transition-all",
         active
-          ? "border-primary bg-primary text-background"
+          ? "border-primary-border bg-primary-soft text-primary dark:bg-[rgba(124,58,237,0.18)] dark:text-[#E9D5FF]"
           : "border-border bg-background text-foreground hover:bg-muted"
       )}
     >
@@ -207,7 +207,7 @@ export function AlertsPage() {
                   <Button
                     type="button"
                     onClick={savePreferences}
-                    className="w-full bg-[#2563EB] text-white hover:bg-[#1D4ED8] hover:text-white"
+                    className="w-full"
                   >
                     Save Preferences
                   </Button>

@@ -71,19 +71,19 @@ function ToggleGroup({
         {values.map((value) => {
           const active = selected.includes(value);
           return (
-            <button
-              key={value}
-              type="button"
-              onClick={() => onToggle(value)}
-              className={cn(
-                "rounded-full border px-4 py-2 text-sm font-medium transition-all",
-                active
-                  ? "border-transparent bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(37,99,235,0.18)]"
-                  : "border-border bg-background text-foreground hover:bg-muted"
-              )}
-            >
-              {value}
-            </button>
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => onToggle(value)}
+                  className={cn(
+                    "rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                    active
+                  ? "border-primary-border bg-primary-soft text-primary shadow-[0_10px_20px_rgba(124,58,237,0.12)] dark:bg-[rgba(124,58,237,0.18)] dark:text-[#E9D5FF]"
+                  : "border-border bg-surface text-foreground hover:bg-muted"
+                  )}
+                >
+                  {value}
+                </button>
           );
         })}
       </div>
@@ -205,15 +205,15 @@ export default function ProfilePage() {
                       key={level}
                       type="button"
                       onClick={() => setProfile({ ...profile, experienceLevel: level })}
-                      className={cn(
-                        "rounded-full border px-4 py-2 text-sm font-medium transition-all",
-                        profile.experienceLevel === level
-                          ? "border-transparent bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(37,99,235,0.18)]"
-                          : "border-border bg-background text-foreground hover:bg-muted"
-                      )}
-                    >
-                      {level}
-                    </button>
+                    className={cn(
+                      "rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                      profile.experienceLevel === level
+                          ? "border-primary-border bg-primary-soft text-primary shadow-[0_10px_20px_rgba(124,58,237,0.12)] dark:bg-[rgba(124,58,237,0.18)] dark:text-[#E9D5FF]"
+                          : "border-border bg-surface text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {level}
+                  </button>
                   ))}
                 </div>
               </SectionCard>
@@ -229,15 +229,15 @@ export default function ProfilePage() {
                       key={mode}
                       type="button"
                       onClick={() => setProfile({ ...profile, preferredMode: mode })}
-                      className={cn(
-                        "rounded-full border px-4 py-2 text-sm font-medium transition-all",
-                        profile.preferredMode === mode
-                          ? "border-transparent bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(37,99,235,0.18)]"
-                          : "border-border bg-background text-foreground hover:bg-muted"
-                      )}
-                    >
-                      {mode}
-                    </button>
+                    className={cn(
+                      "rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                      profile.preferredMode === mode
+                          ? "border-primary-border bg-primary-soft text-primary shadow-[0_10px_20px_rgba(124,58,237,0.12)] dark:bg-[rgba(124,58,237,0.18)] dark:text-[#E9D5FF]"
+                          : "border-border bg-surface text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {mode}
+                  </button>
                   ))}
                 </div>
               </SectionCard>
@@ -249,16 +249,16 @@ export default function ProfilePage() {
                       key={item}
                       type="button"
                       onClick={() => setProfile({ ...profile, availability: item })}
-                      className={cn(
-                        "rounded-full border px-4 py-2 text-sm font-medium transition-all",
-                        profile.availability === item
-                          ? "border-transparent bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(37,99,235,0.18)]"
-                          : "border-border bg-background text-foreground hover:bg-muted"
-                      )}
-                    >
-                      {item}
-                    </button>
-                  ))}
+                    className={cn(
+                      "rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                      profile.availability === item
+                          ? "border-primary-border bg-primary-soft text-primary shadow-[0_10px_20px_rgba(124,58,237,0.12)] dark:bg-[rgba(124,58,237,0.18)] dark:text-[#E9D5FF]"
+                          : "border-border bg-surface text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item}
+                  </button>
+                ))}
                 </div>
               </SectionCard>
 
@@ -266,7 +266,7 @@ export default function ProfilePage() {
                 <Button
                   type="button"
                   onClick={saveProfile}
-                  className="h-12 px-6 text-base bg-[#2563EB] text-white hover:bg-[#1D4ED8] hover:text-white"
+                  className="h-12 px-6 text-base"
                 >
                   Save Preferences
                 </Button>

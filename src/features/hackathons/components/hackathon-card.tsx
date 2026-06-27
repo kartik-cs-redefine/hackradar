@@ -84,10 +84,10 @@ function TrackButton({
 }) {
   if (enrolledMode) {
     return (
-      <Button asChild className="bg-gradient-to-r from-[#dc2626] to-[#ef4444] text-white shadow-[0_10px_28px_rgba(220,38,38,0.18)] hover:bg-gradient-to-r hover:from-[#dc2626] hover:to-[#ef4444] hover:text-white">
+      <Button asChild variant="outline" className="border-danger/20 text-danger hover:bg-danger/10 hover:text-danger">
         <Link href="/alerts">
           <BellRing className="size-4" />
-          {showNotifications ? "Notifications" : "Tracking ✓"}
+          {showNotifications ? "Notifications" : "Tracking"}
         </Link>
       </Button>
     );
@@ -98,9 +98,7 @@ function TrackButton({
       type="button"
       onClick={() => onTrack?.(hackathon)}
       className={cn(
-        "relative overflow-hidden bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white shadow-[0_10px_28px_rgba(37,99,235,0.22)]",
-        "transition-all duration-300 hover:scale-[1.02] hover:brightness-105 hover:shadow-[0_14px_34px_rgba(37,99,235,0.28)]",
-        "dark:from-[#6d28d9] dark:to-[#2563EB] dark:shadow-[0_10px_28px_rgba(109,40,217,0.20)]",
+        "relative overflow-hidden shadow-[0_10px_28px_rgba(124,58,237,0.18)]",
         "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.18),transparent_60%)] before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100",
         tracked ? "opacity-95" : ""
       )}
@@ -112,7 +110,7 @@ function TrackButton({
         className="inline-flex items-center gap-2"
       >
         <Target className="size-4" />
-        {tracked ? "✓ Enrolled" : "Track"}
+        {tracked ? "Tracked" : "Track"}
       </motion.span>
     </Button>
   );
@@ -141,19 +139,19 @@ export function HackathonCard({
     >
       <Card
         className={cn(
-          "group flex h-full flex-col justify-between border-border/70 bg-surface/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.04)] backdrop-blur-sm",
+          "group flex h-full flex-col justify-between border-border/70 bg-surface/95 p-5 shadow-[0_10px_30px_rgba(31,25,48,0.06)] backdrop-blur-sm",
           "relative overflow-hidden transition-[transform,box-shadow,border-color] duration-300 ease-out",
-          "hover:border-[#4f46e5]/20 hover:shadow-[0_18px_45px_rgba(79,70,229,0.10),0_2px_8px_rgba(59,130,246,0.06)]",
-          "dark:hover:border-cyan-400/15 dark:hover:shadow-[0_18px_45px_rgba(34,211,238,0.08),0_2px_8px_rgba(168,85,247,0.06)]"
+          "hover:border-primary-border hover:shadow-[0_18px_45px_rgba(124,58,237,0.10),0_2px_8px_rgba(124,58,237,0.06)]",
+          "dark:hover:border-primary-border dark:hover:shadow-[0_18px_45px_rgba(124,58,237,0.12),0_2px_8px_rgba(124,58,237,0.08)]"
         )}
       >
         <div
           aria-hidden="true"
           className={cn(
             "pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300",
-            "bg-[radial-gradient(circle_at_top_left,rgba(79,70,229,0.12),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.08),transparent_40%)]",
+            "bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.12),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(124,58,237,0.08),transparent_40%)]",
             "group-hover:opacity-100",
-            "dark:bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.10),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.08),transparent_40%)]"
+            "dark:bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.10),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(124,58,237,0.08),transparent_40%)]"
           )}
         />
         <div className="relative">
@@ -182,7 +180,9 @@ export function HackathonCard({
             </div>
             <div className="flex flex-col items-end gap-2">
               {typeof recommendationScore === "number" ? (
-                <Badge tone="default">{recommendationScore}% {recommendationLabel}</Badge>
+                <Badge tone="default">
+                  {recommendationScore}% {recommendationLabel}
+                </Badge>
               ) : null}
               <Badge tone={hackathon.status === "Live" ? "default" : "muted"}>{hackathon.status}</Badge>
               <Badge tone="muted">{hackathon.mode}</Badge>
@@ -204,7 +204,7 @@ export function HackathonCard({
               <ul className="mt-2 space-y-1 text-sm text-foreground">
                 {recommendationReasons.map((reason) => (
                   <li key={reason} className="flex gap-2">
-                    <span className="text-emerald-500">✓</span>
+                    <span className="text-success">✓</span>
                     <span>{reason}</span>
                   </li>
                 ))}

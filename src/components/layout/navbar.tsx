@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Search, SunMoon } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -11,6 +12,7 @@ import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
 
 const links = [
+  { href: "/", label: "Home" },
   { href: "/hrai", label: "HRAI" },
   { href: "/hackathons", label: "Hackathons" },
   { href: "/enrolled", label: "Enrolled" },
@@ -21,6 +23,7 @@ const links = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const navbarTone = isScrolled
@@ -90,15 +93,18 @@ export function Navbar() {
               asChild
               className={cn(
                 "transition-colors duration-200 hover:bg-muted/70",
-                navbarTone.text
+                navbarTone.text,
+                pathname === item.href && "bg-muted/70 text-foreground"
               )}
             >
               <Link
                 href={item.href}
                 className={cn(
                   "rounded-full transition-colors duration-200 hover:bg-muted/70 focus-visible:bg-muted/70",
-                  navbarTone.hoverText
+                  navbarTone.hoverText,
+                  pathname === item.href && "bg-muted/70 text-foreground"
                 )}
+                aria-current={pathname === item.href ? "page" : undefined}
               >
                 {item.label}
               </Link>

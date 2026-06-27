@@ -14,6 +14,7 @@ type MobileNavProps = {
 };
 
 const links = [
+  { href: "/", label: "Home" },
   { href: "/hrai", label: "HRAI" },
   { href: "/hackathons", label: "Hackathons" },
   { href: "/enrolled", label: "Enrolled" },

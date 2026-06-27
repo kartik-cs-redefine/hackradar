@@ -54,7 +54,6 @@ const visionFeatures = [
 ];
 
 function SectionHeading({
-  eyebrow,
   title,
   subtitle,
 }: {
@@ -64,11 +63,6 @@ function SectionHeading({
 }) {
   return (
     <div className="max-w-3xl">
-      {eyebrow ? (
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          {eyebrow}
-        </div>
-      ) : null}
       <h2 className="mt-5 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
         {title}
       </h2>
@@ -151,11 +145,7 @@ export default function AboutPage() {
             >
               <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.08),_transparent_45%)] dark:bg-[radial-gradient(circle_at_top,_rgba(168,85,247,0.14),_transparent_45%)]" />
 
-              <div className="mx-auto max-w-3xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm text-foreground shadow-sm">
-                  <span className="font-medium">HackRadar Team</span>
-                </div>
-
+            <div className="mx-auto max-w-3xl">
                 <h1 className="mt-6 text-5xl font-semibold tracking-tight text-foreground sm:text-6xl">
                   About Us
                 </h1>
@@ -189,7 +179,6 @@ export default function AboutPage() {
         <section id="team" className="py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionHeading
-              eyebrow="Meet the Team"
               title="Meet the Team"
               subtitle="The passionate people building HackRadar."
             />
@@ -205,7 +194,6 @@ export default function AboutPage() {
           <div className="mx-auto grid max-w-7xl gap-4 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
             <Card className="p-7 sm:p-8">
               <SectionHeading
-                eyebrow="Our Mission"
                 title="Our Mission"
                 subtitle="Empowering students to discover the right opportunities through AI-driven guidance and intelligent recommendations."
               />
@@ -219,7 +207,6 @@ export default function AboutPage() {
 
             <Card className="p-7 sm:p-8">
               <SectionHeading
-                eyebrow="Our Vision"
                 title="Our Vision"
                 subtitle="Feature cards shaped by the same HackRadar language."
               />
@@ -248,7 +235,6 @@ export default function AboutPage() {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <Card className="overflow-hidden p-7 text-center sm:p-8 lg:p-9">
               <SectionHeading
-                eyebrow="Get in Touch"
                 title="Get in Touch"
                 subtitle="Interested in collaborating, contributing, or sharing feedback? We'd love to hear from you."
               />

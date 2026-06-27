@@ -13,7 +13,7 @@ import { HackathonCard } from "@/features/hackathons/components/hackathon-card";
 import { useEnrolledHackathons } from "@/features/hackathons/hooks";
 import { addHackathon, removeHackathon } from "@/features/hackathons/storage";
 import { recommendHackathons } from "@/features/recommendation/recommendationEngine";
-import { defaultUserProfile, getStoredUserProfile } from "@/features/profile/storage";
+import { getStoredUserProfile } from "@/features/profile/storage";
 import type { UserProfile } from "@/features/profile/storage";
 
 export default function HraiPage() {
@@ -53,9 +53,6 @@ export default function HraiPage() {
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                HRAI
-              </div>
               <h1 className="mt-5 flex items-center gap-3 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                 <Bot className="size-8" />
                 HRAI

@@ -176,7 +176,6 @@ const footerColumns = [
 ];
 
 export function SectionShell({
-  eyebrow,
   title,
   subtitle,
   children,
@@ -187,11 +186,6 @@ export function SectionShell({
     <section id={id} className={cn("py-20 sm:py-24 lg:py-28", className)}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
-          {eyebrow ? (
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              {eyebrow}
-            </div>
-          ) : null}
           <h2 className="mt-5 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             {title}
           </h2>

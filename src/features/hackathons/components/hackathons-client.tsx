@@ -25,17 +25,12 @@ type HackathonsClientProps = {
 function PageHeader({
   title,
   subtitle,
-  eyebrow,
 }: {
   title: string;
   subtitle: string;
-  eyebrow: string;
 }) {
   return (
     <div className="max-w-3xl">
-      <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-        {eyebrow}
-      </div>
       <h1 className="mt-5 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
         {title}
       </h1>
@@ -113,13 +108,11 @@ export function HackathonsClient({ enrolledPage = false }: HackathonsClientProps
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {enrolledPage ? (
               <PageHeader
-                eyebrow="Enrolled"
                 title="My Enrolled Hackathons"
                 subtitle="Track all your registered and followed hackathons in one place."
               />
             ) : (
               <PageHeader
-                eyebrow="Hackathons"
                 title="Discover Hackathons"
                 subtitle="Find the best hackathons, innovation challenges and coding competitions from around the world."
               />

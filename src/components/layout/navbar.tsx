@@ -15,7 +15,7 @@ const links = [
   { href: "/hackathons", label: "Hackathons" },
   { href: "/enrolled", label: "Enrolled" },
   { href: "/alerts", label: "Alerts" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "About Us" },
 ];
 
 export function Navbar() {

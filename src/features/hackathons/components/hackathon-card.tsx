@@ -25,6 +25,9 @@ type HackathonCardProps = {
   tracked?: boolean;
   enrolledMode?: boolean;
   showNotifications?: boolean;
+  recommendationScore?: number;
+  recommendationReasons?: string[];
+  recommendationLabel?: string;
   onRemove?: (hackathon: Hackathon) => void;
   onTrack?: (hackathon: Hackathon) => void;
 };
@@ -121,6 +124,9 @@ export function HackathonCard({
   tracked = false,
   enrolledMode = false,
   showNotifications = false,
+  recommendationScore,
+  recommendationReasons,
+  recommendationLabel = "HRAI Match",
   onTrack,
   onRemove,
 }: HackathonCardProps) {
@@ -175,6 +181,9 @@ export function HackathonCard({
               </div>
             </div>
             <div className="flex flex-col items-end gap-2">
+              {typeof recommendationScore === "number" ? (
+                <Badge tone="default">{recommendationScore}% {recommendationLabel}</Badge>
+              ) : null}
               <Badge tone={hackathon.status === "Live" ? "default" : "muted"}>{hackathon.status}</Badge>
               <Badge tone="muted">{hackathon.mode}</Badge>
             </div>
@@ -187,6 +196,21 @@ export function HackathonCard({
           </div>
 
           <p className="mt-4 text-sm leading-6 text-muted-foreground">{hackathon.description}</p>
+          {recommendationReasons?.length ? (
+            <div className="mt-4 rounded-2xl border border-border bg-background px-4 py-3">
+              <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                Why Recommended
+              </p>
+              <ul className="mt-2 space-y-1 text-sm text-foreground">
+                {recommendationReasons.map((reason) => (
+                  <li key={reason} className="flex gap-2">
+                    <span className="text-emerald-500">✓</span>
+                    <span>{reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <div className="mt-5 grid gap-2 text-sm sm:grid-cols-2">
             <MetaRow

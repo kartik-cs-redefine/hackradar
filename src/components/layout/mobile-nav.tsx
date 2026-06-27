@@ -14,6 +14,7 @@ type MobileNavProps = {
 };
 
 const links = [
+  { href: "/hrai", label: "HRAI" },
   { href: "/hackathons", label: "Hackathons" },
   { href: "/enrolled", label: "Enrolled" },
   { href: "/alerts", label: "Alerts" },
@@ -89,8 +90,8 @@ export function MobileNav({
                   </Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/get-started" onClick={() => onOpenChange(false)}>
-                    Get Started
+                  <Link href="/profile" onClick={() => onOpenChange(false)}>
+                    User
                   </Link>
                 </Button>
               </div>

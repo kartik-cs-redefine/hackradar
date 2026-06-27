@@ -11,6 +11,7 @@ import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
 
 const links = [
+  { href: "/hrai", label: "HRAI" },
   { href: "/hackathons", label: "Hackathons" },
   { href: "/enrolled", label: "Enrolled" },
   { href: "/alerts", label: "Alerts" },
@@ -152,8 +153,8 @@ export function Navbar() {
             </Link>
           </Button>
           <Button asChild className="bg-[#2563EB] text-white hover:bg-[#1D4ED8] hover:text-white">
-            <Link href="/get-started" className="text-white hover:text-white">
-              Get Started
+            <Link href="/profile" className="text-white hover:text-white">
+              User
             </Link>
           </Button>
         </div>

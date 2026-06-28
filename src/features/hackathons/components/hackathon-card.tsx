@@ -32,6 +32,7 @@ type HackathonCardProps = {
   recommendationLabel?: string;
   onRemove?: (hackathon: Hackathon) => void;
   onTrack?: (hackathon: Hackathon) => void;
+  onOpenNotifications?: (hackathon: Hackathon) => void;
 };
 
 function Badge({ children, tone }: { children: ReactNode; tone?: "default" | "muted" }) {
@@ -76,21 +77,25 @@ function TrackButton({
   enrolledMode,
   showNotifications,
   onTrack,
+  onOpenNotifications,
   hackathon,
 }: {
   tracked?: boolean;
   enrolledMode?: boolean;
   showNotifications?: boolean;
   onTrack?: (hackathon: Hackathon) => void;
+  onOpenNotifications?: (hackathon: Hackathon) => void;
   hackathon: Hackathon;
 }) {
   if (enrolledMode) {
     return (
-      <Button asChild variant="outline" className="border-danger/20 text-danger hover:bg-danger/10 hover:text-danger">
-        <Link href="/alerts">
-          <BellRing className="size-4" />
-          {showNotifications ? "Notifications" : "Tracking"}
-        </Link>
+      <Button
+        type="button"
+        onClick={() => onOpenNotifications?.(hackathon)}
+        className="bg-[#2563EB] text-white hover:bg-[#1D4ED8] hover:text-white"
+      >
+        <BellRing className="size-4" />
+        {showNotifications ? "Notifications" : "Tracking"}
       </Button>
     );
   }
@@ -234,7 +239,7 @@ function TimingOption({
   );
 }
 
-function HackathonNotificationsDialog({ hackathon }: { hackathon: Hackathon }) {
+export function HackathonNotificationsDialog({ hackathon }: { hackathon: Hackathon }) {
   const [preferences, setPreferences] = useState<HackathonNotificationPreferences>(() =>
     loadNotificationPreferences(hackathon.id)
   );
@@ -469,6 +474,7 @@ export function HackathonCard({
   recommendationLabel = "HRAI Match",
   onTrack,
   onRemove,
+  onOpenNotifications,
 }: HackathonCardProps) {
   return (
     <motion.article
@@ -589,6 +595,7 @@ export function HackathonCard({
               enrolledMode={enrolledMode}
               showNotifications={showNotifications}
               onTrack={onTrack}
+              onOpenNotifications={onOpenNotifications}
               hackathon={hackathon}
             />
           </div>

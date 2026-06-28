@@ -7,9 +7,10 @@ import { BookmarkCheck, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { Navbar } from "@/components/layout/navbar";
+import { Dialog } from "@/components/ui";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { HackathonCard } from "./hackathon-card";
+import { HackathonCard, HackathonNotificationsDialog } from "./hackathon-card";
 import { HackathonSearch } from "./hackathon-search";
 import { HackathonFilters } from "./hackathon-filters";
 import { hackathons } from "@/data/hackathons";
@@ -76,6 +77,7 @@ function EmptyState() {
 export function HackathonsClient({ enrolledPage = false }: HackathonsClientProps) {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<HackathonFilters>(defaultHackathonFilters);
+  const [notificationHackathon, setNotificationHackathon] = useState<(typeof hackathons)[number] | null>(null);
   const { trackedIds, trackedHackathons } = useEnrolledHackathons(hackathons);
 
   const source = enrolledPage ? trackedHackathons : hackathons;
@@ -137,6 +139,7 @@ export function HackathonsClient({ enrolledPage = false }: HackathonsClientProps
                     showNotifications={enrolledPage}
                     onTrack={(item) => handleTrack(item.id)}
                     onRemove={(item) => handleRemove(item.id)}
+                    onOpenNotifications={(item) => setNotificationHackathon(item)}
                   />
                 ))}
               </div>
@@ -175,6 +178,10 @@ export function HackathonsClient({ enrolledPage = false }: HackathonsClientProps
           </div>
         </section>
       </main>
+
+      <Dialog open={notificationHackathon !== null} onOpenChange={(open) => !open && setNotificationHackathon(null)}>
+        {notificationHackathon ? <HackathonNotificationsDialog hackathon={notificationHackathon} /> : null}
+      </Dialog>
     </div>
   );
 }

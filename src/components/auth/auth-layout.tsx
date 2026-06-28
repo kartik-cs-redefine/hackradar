@@ -23,9 +23,7 @@ export function AuthLayout({ children, topLeftVariant = "back", topRightAction }
     <main className="min-h-screen overflow-hidden bg-background">
       <div className="fixed left-6 top-6 z-20 sm:left-6 sm:top-6">
         {topLeftVariant === "logo" ? (
-          <Link href="/" className="inline-flex">
-            <Logo isDark={isDark} />
-          </Link>
+          <Logo isDark={isDark} />
         ) : (
           <Link
             href="/"

@@ -215,9 +215,7 @@ export function RegisterForm() {
     <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(31,25,48,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
       <div className="space-y-6">
         <div className="space-y-4">
-          <Link href="/" className="inline-flex w-fit">
-            <Logo isDark={isDark} />
-          </Link>
+          <Logo isDark={isDark} />
           <div className="space-y-2">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
               WELCOME TO HACKRADAR

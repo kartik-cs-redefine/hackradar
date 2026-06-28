@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 type MobileNavProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onOpenHraiPlus: () => void;
   onThemeToggle: () => void;
   toneClassName: string;
 };
@@ -25,6 +26,7 @@ const links = [
 export function MobileNav({
   open,
   onOpenChange,
+  onOpenHraiPlus,
   onThemeToggle,
   toneClassName,
 }: MobileNavProps) {
@@ -69,18 +71,24 @@ export function MobileNav({
 
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 <Button
+                  type="button"
+                  variant="outline"
+                  className="justify-start border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 hover:text-primary"
+                  onClick={() => {
+                    onOpenChange(false);
+                    onOpenHraiPlus();
+                  }}
+                >
+                  <Sparkles className="size-4" />
+                  HRAI+
+                </Button>
+                <Button
                   variant="outline"
                   className="justify-start"
                   type="button"
                   onClick={onThemeToggle}
                 >
                   Toggle theme
-                </Button>
-                <Button variant="outline" className="justify-start" asChild>
-                  <Link href="/search">
-                    <Search className="size-4" />
-                    Search
-                  </Link>
                 </Button>
               </div>
 

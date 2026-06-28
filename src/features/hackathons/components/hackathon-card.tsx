@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   ArrowUpRight,
   BellRing,
@@ -14,6 +14,7 @@ import {
   Target,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 import { Button, Card, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui";
 import { cn } from "@/lib/utils";
@@ -128,28 +129,124 @@ function TimelineStatusPill({ status }: { status: TimelineStage["status"] }) {
   return <span className={cn("rounded-full border px-2.5 py-1 text-[11px] font-medium", tone)}>{status}</span>;
 }
 
-function getTimelineIcon(label: string) {
-  const normalized = label.toLowerCase();
-  if (normalized.includes("registration")) return <CalendarDays className="size-4" />;
-  if (normalized.includes("team")) return <CircleDot className="size-4" />;
-  if (normalized.includes("screen")) return <Target className="size-4" />;
-  if (normalized.includes("mentor")) return <Rocket className="size-4" />;
-  if (normalized.includes("winner")) return <ArrowUpRight className="size-4" />;
-  if (normalized.includes("final")) return <CalendarRange className="size-4" />;
-  return <CircleDot className="size-4" />;
+type HackathonNotificationPreferences = {
+  whatsapp: boolean;
+  telegram: boolean;
+  browser: boolean;
+  email: boolean;
+  aiReminderCall: boolean;
+  reminderTiming: "24" | "12" | "6" | "1";
+};
+
+const DEFAULT_NOTIFICATION_PREFERENCES: HackathonNotificationPreferences = {
+  whatsapp: false,
+  telegram: false,
+  browser: false,
+  email: false,
+  aiReminderCall: false,
+  reminderTiming: "24",
+};
+
+function getNotificationStorageKey(hackathonId: string) {
+  return `hackradar-hackathon-alert-preferences:${hackathonId}`;
 }
 
-function TimelineDialog({ hackathon }: { hackathon: Hackathon }) {
-  const timeline = getHackathonTimeline(hackathon);
+function loadNotificationPreferences(hackathonId: string) {
+  if (typeof window === "undefined") {
+    return DEFAULT_NOTIFICATION_PREFERENCES;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(getNotificationStorageKey(hackathonId));
+    if (!raw) return DEFAULT_NOTIFICATION_PREFERENCES;
+    return { ...DEFAULT_NOTIFICATION_PREFERENCES, ...JSON.parse(raw) } as HackathonNotificationPreferences;
+  } catch {
+    return DEFAULT_NOTIFICATION_PREFERENCES;
+  }
+}
+
+function ToggleRow({
+  title,
+  description,
+  checked,
+  onChange,
+}: {
+  title: string;
+  description: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <label className="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-border bg-background px-4 py-4">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-foreground">{title}</p>
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">{description}</p>
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-label={title}
+        onClick={() => onChange(!checked)}
+        className={cn(
+          "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors",
+          checked ? "bg-primary" : "bg-border"
+        )}
+      >
+        <span
+          className={cn(
+            "inline-block size-5 rounded-full bg-surface shadow-sm transition-transform",
+            checked ? "translate-x-5" : "translate-x-1"
+          )}
+        />
+      </button>
+    </label>
+  );
+}
+
+function TimingOption({
+  label,
+  value,
+  current,
+  onSelect,
+}: {
+  label: string;
+  value: HackathonNotificationPreferences["reminderTiming"];
+  current: HackathonNotificationPreferences["reminderTiming"];
+  onSelect: (value: HackathonNotificationPreferences["reminderTiming"]) => void;
+}) {
+  const active = current === value;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(value)}
+      aria-pressed={active}
+      className={cn(
+        "rounded-2xl border px-4 py-3 text-left text-sm transition-all",
+        active
+          ? "border-primary-border bg-primary-soft text-primary dark:bg-[rgba(124,58,237,0.18)] dark:text-[#E9D5FF]"
+          : "border-border bg-background text-foreground hover:bg-muted"
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
+function HackathonNotificationsDialog({ hackathon }: { hackathon: Hackathon }) {
+  const [preferences, setPreferences] = useState<HackathonNotificationPreferences>(() =>
+    loadNotificationPreferences(hackathon.id)
+  );
+
+  const savePreferences = () => {
+    window.localStorage.setItem(getNotificationStorageKey(hackathon.id), JSON.stringify(preferences));
+    toast.success("Preferences Saved Successfully");
+  };
 
   return (
     <DialogContent className="p-0">
-      <div
-        className="max-h-[86vh] overflow-y-auto [scrollbar-width:thin]"
-        style={{
-          scrollbarColor: "var(--border) transparent",
-        }}
-      >
+      <div className="max-h-[86vh] overflow-y-auto [scrollbar-width:thin]" style={{ scrollbarColor: "var(--border) transparent" }}>
         <div className="border-b border-border/70 bg-surface px-6 py-6 sm:px-7">
           <DialogHeader className="pr-10 text-left">
             <div className="flex items-center gap-4">
@@ -165,49 +262,178 @@ function TimelineDialog({ hackathon }: { hackathon: Hackathon }) {
         </div>
 
         <div className="px-6 py-6 sm:px-7">
-          <div className="relative">
-            <div className="absolute left-[1.45rem] top-2 bottom-2 w-px bg-border sm:left-[1.55rem]" />
-            <div className="space-y-4 sm:space-y-5">
-              {timeline.stages.map((stage) => (
-                <div key={`${hackathon.id}-${stage.label}`} className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-4">
-                  <div className="relative flex items-center justify-center pt-1">
-                    <div className="relative z-10 flex size-9 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm">
-                      {getTimelineIcon(stage.label)}
-                    </div>
-                  </div>
-                  <Card className="min-w-0 border-border/70 bg-background/70 p-4 shadow-none sm:p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="min-w-0 flex-1">
-                        <h4 className="text-sm font-semibold leading-6 text-foreground">{stage.label}</h4>
-                        <p className="mt-1 text-sm leading-6 text-muted-foreground">{stage.description}</p>
-                        <div className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
-                          <CalendarDays className="size-4 text-muted-foreground" />
-                          {stage.date}
-                        </div>
-                      </div>
-                      <div className="pt-0.5">
-                        <TimelineStatusPill status={stage.status} />
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-              ))}
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold tracking-tight text-foreground">Notification Preferences</h3>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                Manage reminder preferences for this hackathon only.
+              </p>
             </div>
-          </div>
 
-          {timeline.officialWebsite ? (
-            <div className="mt-6">
-              <Button asChild variant="outline" className="w-full">
-                <a href={timeline.officialWebsite} target="_blank" rel="noreferrer">
-                  <ArrowUpRight className="size-4" />
-                  Open Official Website
-                </a>
-              </Button>
+            <div className="grid gap-3">
+              <ToggleRow
+                title="WhatsApp Alerts"
+                description="Receive important hackathon reminders on WhatsApp."
+                checked={preferences.whatsapp}
+                onChange={(value) => setPreferences((current) => ({ ...current, whatsapp: value }))}
+              />
+              <ToggleRow
+                title="Telegram Alerts"
+                description="Receive instant Telegram notifications."
+                checked={preferences.telegram}
+                onChange={(value) => setPreferences((current) => ({ ...current, telegram: value }))}
+              />
+              <ToggleRow
+                title="Browser Notifications"
+                description="Receive notifications directly in your browser."
+                checked={preferences.browser}
+                onChange={(value) => setPreferences((current) => ({ ...current, browser: value }))}
+              />
+              <ToggleRow
+                title="Email Notifications"
+                description="Receive updates by email."
+                checked={preferences.email}
+                onChange={(value) => setPreferences((current) => ({ ...current, email: value }))}
+              />
+              <ToggleRow
+                title="AI Reminder Call"
+                description="Receive an AI-powered reminder call before important deadlines and events."
+                checked={preferences.aiReminderCall}
+                onChange={(value) => setPreferences((current) => ({ ...current, aiReminderCall: value }))}
+              />
             </div>
-          ) : null}
+
+            <div className="rounded-[1.75rem] border border-border bg-background p-5">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground">Reminder Timing</h2>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <TimingOption
+                  label="24 Hours Before"
+                  value="24"
+                  current={preferences.reminderTiming}
+                  onSelect={(value) => setPreferences((current) => ({ ...current, reminderTiming: value }))}
+                />
+                <TimingOption
+                  label="12 Hours Before"
+                  value="12"
+                  current={preferences.reminderTiming}
+                  onSelect={(value) => setPreferences((current) => ({ ...current, reminderTiming: value }))}
+                />
+                <TimingOption
+                  label="6 Hours Before"
+                  value="6"
+                  current={preferences.reminderTiming}
+                  onSelect={(value) => setPreferences((current) => ({ ...current, reminderTiming: value }))}
+                />
+                <TimingOption
+                  label="1 Hour Before"
+                  value="1"
+                  current={preferences.reminderTiming}
+                  onSelect={(value) => setPreferences((current) => ({ ...current, reminderTiming: value }))}
+                />
+              </div>
+            </div>
+
+            <Button type="button" onClick={savePreferences} className="w-full">
+              Save Preferences
+            </Button>
+          </div>
         </div>
       </div>
     </DialogContent>
+  );
+}
+
+function getTimelineIcon(label: string) {
+  const normalized = label.toLowerCase();
+  if (normalized.includes("registration")) return <CalendarDays className="size-4" />;
+  if (normalized.includes("team")) return <CircleDot className="size-4" />;
+  if (normalized.includes("screen")) return <Target className="size-4" />;
+  if (normalized.includes("mentor")) return <Rocket className="size-4" />;
+  if (normalized.includes("winner")) return <ArrowUpRight className="size-4" />;
+  if (normalized.includes("final")) return <CalendarRange className="size-4" />;
+  return <CircleDot className="size-4" />;
+}
+
+function TimelineDialog({ hackathon }: { hackathon: Hackathon }) {
+  const timeline = getHackathonTimeline(hackathon);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  return (
+    <>
+      <DialogContent className="p-0">
+        <div
+          className="max-h-[86vh] overflow-y-auto [scrollbar-width:thin]"
+          style={{
+            scrollbarColor: "var(--border) transparent",
+          }}
+        >
+          <div className="border-b border-border/70 bg-surface px-6 py-6 sm:px-7">
+            <DialogHeader className="pr-10 text-left">
+              <div className="flex items-center gap-4">
+                <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-border bg-background text-sm font-semibold text-foreground">
+                  {hackathon.logo}
+                </div>
+                <div className="min-w-0">
+                  <DialogTitle>{hackathon.name}</DialogTitle>
+                  <DialogDescription className="mt-1">{hackathon.organizer}</DialogDescription>
+                </div>
+              </div>
+            </DialogHeader>
+          </div>
+
+          <div className="px-6 py-6 sm:px-7">
+            <div className="relative">
+              <div className="absolute left-[1.45rem] top-2 bottom-2 w-px bg-border sm:left-[1.55rem]" />
+              <div className="space-y-4 sm:space-y-5">
+                {timeline.stages.map((stage) => (
+                  <div key={`${hackathon.id}-${stage.label}`} className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-4">
+                    <div className="relative flex items-center justify-center pt-1">
+                      <div className="relative z-10 flex size-9 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm">
+                        {getTimelineIcon(stage.label)}
+                      </div>
+                    </div>
+                    <Card className="min-w-0 border-border/70 bg-background/70 p-4 shadow-none sm:p-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="text-sm font-semibold leading-6 text-foreground">{stage.label}</h4>
+                          <p className="mt-1 text-sm leading-6 text-muted-foreground">{stage.description}</p>
+                          <div className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
+                            <CalendarDays className="size-4 text-muted-foreground" />
+                            {stage.date}
+                          </div>
+                        </div>
+                        <div className="pt-0.5">
+                          <TimelineStatusPill status={stage.status} />
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={cn("mt-6 grid gap-3", timeline.officialWebsite ? "sm:grid-cols-2" : "grid-cols-1")}>
+              {timeline.officialWebsite ? (
+                <Button asChild variant="outline" className="w-full">
+                  <a href={timeline.officialWebsite} target="_blank" rel="noreferrer">
+                    <ArrowUpRight className="size-4" />
+                    Open Official Website
+                  </a>
+                </Button>
+              ) : null}
+              <Button type="button" className="w-full" onClick={() => setNotificationsOpen(true)}>
+                <BellRing className="size-4" />
+                Notifications
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+
+      <Dialog open={notificationsOpen} onOpenChange={setNotificationsOpen}>
+        <HackathonNotificationsDialog hackathon={hackathon} />
+      </Dialog>
+    </>
   );
 }
 

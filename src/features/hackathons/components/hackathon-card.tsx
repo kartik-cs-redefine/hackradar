@@ -4,21 +4,21 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import {
   ArrowUpRight,
+  BellRing,
   BookmarkMinus,
   CalendarDays,
   CalendarRange,
   CircleDot,
   MapPin,
   Rocket,
-  BellRing,
   Target,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Button, Card, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import type { Hackathon } from "../types";
+import { getHackathonTimeline, type TimelineStage } from "../timeline-data";
 
 type HackathonCardProps = {
   hackathon: Hackathon;
@@ -117,22 +117,109 @@ function TrackButton({
   );
 }
 
+function TimelineStatusPill({ status }: { status: TimelineStage["status"] }) {
+  const tone =
+    status === "Completed"
+      ? "border-success/20 bg-success/10 text-success dark:border-success/30 dark:bg-success/15"
+      : status === "Current"
+        ? "border-primary-border bg-primary-soft text-primary dark:bg-[rgba(124,58,237,0.16)] dark:text-[#E9D5FF]"
+        : "border-border bg-background text-muted-foreground";
+
+  return <span className={cn("rounded-full border px-2.5 py-1 text-[11px] font-medium", tone)}>{status}</span>;
+}
+
+function getTimelineIcon(label: string) {
+  const normalized = label.toLowerCase();
+  if (normalized.includes("registration")) return <CalendarDays className="size-4" />;
+  if (normalized.includes("team")) return <CircleDot className="size-4" />;
+  if (normalized.includes("screen")) return <Target className="size-4" />;
+  if (normalized.includes("mentor")) return <Rocket className="size-4" />;
+  if (normalized.includes("winner")) return <ArrowUpRight className="size-4" />;
+  if (normalized.includes("final")) return <CalendarRange className="size-4" />;
+  return <CircleDot className="size-4" />;
+}
+
+function TimelineDialog({ hackathon }: { hackathon: Hackathon }) {
+  const timeline = getHackathonTimeline(hackathon);
+
+  return (
+    <DialogContent className="p-0">
+      <div className="max-h-[86vh] overflow-y-auto">
+        <div className="border-b border-border/70 bg-surface px-5 py-5 sm:px-6">
+          <DialogHeader className="max-w-[calc(100%-3rem)] text-left">
+            <div className="flex items-start gap-4">
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-border bg-background text-sm font-semibold text-foreground">
+                {hackathon.logo}
+              </div>
+              <div className="min-w-0">
+                <DialogTitle>{hackathon.name}</DialogTitle>
+                <DialogDescription className="mt-1">{hackathon.organizer}</DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+        </div>
+
+        <div className="px-5 py-5 sm:px-6">
+          <div className="relative pl-2 sm:pl-4">
+            <div className="absolute left-[1.15rem] top-2 bottom-2 w-px bg-border sm:left-[1.35rem]" />
+            <div className="space-y-5">
+              {timeline.stages.map((stage) => (
+                <div key={`${hackathon.id}-${stage.label}`} className="relative flex gap-4">
+                  <div className="relative z-10 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm">
+                    {getTimelineIcon(stage.label)}
+                  </div>
+                  <Card className="flex-1 border-border/70 bg-background/70 p-4 shadow-none">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h4 className="text-sm font-semibold text-foreground">{stage.label}</h4>
+                        <p className="mt-1 text-sm leading-6 text-muted-foreground">{stage.description}</p>
+                      </div>
+                      <TimelineStatusPill status={stage.status} />
+                    </div>
+                    <div className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
+                      <CalendarDays className="size-4 text-muted-foreground" />
+                      {stage.date}
+                    </div>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {timeline.officialWebsite ? (
+            <div className="mt-6">
+              <Button asChild variant="outline" className="w-full">
+                <a href={timeline.officialWebsite} target="_blank" rel="noreferrer">
+                  <ArrowUpRight className="size-4" />
+                  Open Official Website
+                </a>
+              </Button>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </DialogContent>
+  );
+}
+
 function TimelineButton({ hackathon }: { hackathon: Hackathon }) {
   return (
-    <Button
-      asChild
-      variant="outline"
-      className={cn(
-        "relative w-full overflow-hidden border-rose-200/80 bg-rose-50 text-rose-950 shadow-none",
-        "hover:border-rose-300 hover:bg-rose-100/80 hover:text-rose-950",
-        "dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-100 dark:hover:border-rose-400/30 dark:hover:bg-rose-500/15 dark:hover:text-rose-50"
-      )}
-    >
-      <Link href={`/hackathons/${hackathon.id}/timeline`}>
-        <CalendarRange className="size-4" />
-        Event Timeline
-      </Link>
-    </Button>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            "relative w-full overflow-hidden border-rose-200/80 bg-rose-50 text-rose-950 shadow-none",
+            "hover:border-rose-300 hover:bg-rose-100/80 hover:text-rose-950",
+            "dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-100 dark:hover:border-rose-400/30 dark:hover:bg-rose-500/15 dark:hover:text-rose-50"
+          )}
+        >
+          <CalendarRange className="size-4" />
+          Event Timeline
+        </Button>
+      </DialogTrigger>
+      <TimelineDialog hackathon={hackathon} />
+    </Dialog>
   );
 }
 

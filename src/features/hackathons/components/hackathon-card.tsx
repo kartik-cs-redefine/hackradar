@@ -6,6 +6,7 @@ import {
   ArrowUpRight,
   BookmarkMinus,
   CalendarDays,
+  CalendarRange,
   CircleDot,
   MapPin,
   Rocket,
@@ -112,6 +113,25 @@ function TrackButton({
         <Target className="size-4" />
         {tracked ? "Tracked" : "Track"}
       </motion.span>
+    </Button>
+  );
+}
+
+function TimelineButton({ hackathon }: { hackathon: Hackathon }) {
+  return (
+    <Button
+      asChild
+      variant="outline"
+      className={cn(
+        "relative w-full overflow-hidden border-rose-200/80 bg-rose-50 text-rose-950 shadow-none",
+        "hover:border-rose-300 hover:bg-rose-100/80 hover:text-rose-950",
+        "dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-100 dark:hover:border-rose-400/30 dark:hover:bg-rose-500/15 dark:hover:text-rose-50"
+      )}
+    >
+      <Link href={`/hackathons/${hackathon.id}/timeline`}>
+        <CalendarRange className="size-4" />
+        Event Timeline
+      </Link>
     </Button>
   );
 }
@@ -234,20 +254,23 @@ export function HackathonCard({
           </div>
         </div>
 
-        <div className="relative mt-5 grid gap-3 sm:grid-cols-2">
-          <Button variant="outline" asChild className="relative overflow-hidden">
-            <Link href={hackathon.officialWebsite} target="_blank" rel="noreferrer">
-              More Details
-              <ArrowUpRight className="size-4" />
-            </Link>
-          </Button>
-          <TrackButton
-            tracked={tracked}
-            enrolledMode={enrolledMode}
-            showNotifications={showNotifications}
-            onTrack={onTrack}
-            hackathon={hackathon}
-          />
+        <div className="relative mt-5 grid gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Button variant="outline" asChild className="relative overflow-hidden">
+              <Link href={hackathon.officialWebsite} target="_blank" rel="noreferrer">
+                More Details
+                <ArrowUpRight className="size-4" />
+              </Link>
+            </Button>
+            <TrackButton
+              tracked={tracked}
+              enrolledMode={enrolledMode}
+              showNotifications={showNotifications}
+              onTrack={onTrack}
+              hackathon={hackathon}
+            />
+          </div>
+          <TimelineButton hackathon={hackathon} />
         </div>
       </Card>
     </motion.article>

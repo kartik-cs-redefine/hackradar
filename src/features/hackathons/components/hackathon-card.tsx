@@ -144,10 +144,15 @@ function TimelineDialog({ hackathon }: { hackathon: Hackathon }) {
 
   return (
     <DialogContent className="p-0">
-      <div className="max-h-[86vh] overflow-y-auto">
-        <div className="border-b border-border/70 bg-surface px-5 py-5 sm:px-6">
-          <DialogHeader className="max-w-[calc(100%-3rem)] text-left">
-            <div className="flex items-start gap-4">
+      <div
+        className="max-h-[86vh] overflow-y-auto [scrollbar-width:thin]"
+        style={{
+          scrollbarColor: "var(--border) transparent",
+        }}
+      >
+        <div className="border-b border-border/70 bg-surface px-6 py-6 sm:px-7">
+          <DialogHeader className="pr-10 text-left">
+            <div className="flex items-center gap-4">
               <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-border bg-background text-sm font-semibold text-foreground">
                 {hackathon.logo}
               </div>
@@ -159,26 +164,30 @@ function TimelineDialog({ hackathon }: { hackathon: Hackathon }) {
           </DialogHeader>
         </div>
 
-        <div className="px-5 py-5 sm:px-6">
-          <div className="relative pl-2 sm:pl-4">
-            <div className="absolute left-[1.15rem] top-2 bottom-2 w-px bg-border sm:left-[1.35rem]" />
-            <div className="space-y-5">
+        <div className="px-6 py-6 sm:px-7">
+          <div className="relative">
+            <div className="absolute left-[1.45rem] top-2 bottom-2 w-px bg-border sm:left-[1.55rem]" />
+            <div className="space-y-4 sm:space-y-5">
               {timeline.stages.map((stage) => (
-                <div key={`${hackathon.id}-${stage.label}`} className="relative flex gap-4">
-                  <div className="relative z-10 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm">
-                    {getTimelineIcon(stage.label)}
-                  </div>
-                  <Card className="flex-1 border-border/70 bg-background/70 p-4 shadow-none">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <h4 className="text-sm font-semibold text-foreground">{stage.label}</h4>
-                        <p className="mt-1 text-sm leading-6 text-muted-foreground">{stage.description}</p>
-                      </div>
-                      <TimelineStatusPill status={stage.status} />
+                <div key={`${hackathon.id}-${stage.label}`} className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-4">
+                  <div className="relative flex items-center justify-center pt-1">
+                    <div className="relative z-10 flex size-9 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm">
+                      {getTimelineIcon(stage.label)}
                     </div>
-                    <div className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
-                      <CalendarDays className="size-4 text-muted-foreground" />
-                      {stage.date}
+                  </div>
+                  <Card className="min-w-0 border-border/70 bg-background/70 p-4 shadow-none sm:p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-sm font-semibold leading-6 text-foreground">{stage.label}</h4>
+                        <p className="mt-1 text-sm leading-6 text-muted-foreground">{stage.description}</p>
+                        <div className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
+                          <CalendarDays className="size-4 text-muted-foreground" />
+                          {stage.date}
+                        </div>
+                      </div>
+                      <div className="pt-0.5">
+                        <TimelineStatusPill status={stage.status} />
+                      </div>
                     </div>
                   </Card>
                 </div>

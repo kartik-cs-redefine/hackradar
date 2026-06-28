@@ -1,6 +1,15 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronDown, CircleCheckBig, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Brain,
+  Check,
+  ChevronDown,
+  CircleCheckBig,
+  Clock3,
+  Globe2,
+  Search,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,6 +27,7 @@ type SectionShellProps = {
 type ProblemCardProps = {
   title: string;
   description: string;
+  icon: ReactNode;
 };
 
 type FeatureCardProps = {
@@ -201,11 +211,11 @@ export function SectionShell({
   );
 }
 
-export function ProblemCard({ title, description }: ProblemCardProps) {
+export function ProblemCard({ title, description, icon }: ProblemCardProps) {
   return (
     <article className="rounded-[1.75rem] border border-border bg-surface p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
       <div className="mb-6 flex size-11 items-center justify-center rounded-2xl bg-muted text-foreground">
-        <Sparkles className="size-5" />
+        {icon}
       </div>
       <h3 className="text-lg font-semibold tracking-tight text-foreground">{title}</h3>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
@@ -389,29 +399,33 @@ export function LandingSections() {
       <SectionShell
         id="problem"
         eyebrow="The Problem"
-        title="The Discovery Problem"
-        subtitle="Students miss valuable opportunities because discovering hackathons across multiple platforms is difficult."
+        title="Why Students Miss Great Opportunities"
+        subtitle="Hackathons are spread across multiple platforms, making it difficult to discover opportunities, track deadlines, and choose the right one."
       >
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <ProblemCard
-            title="Fragmented Platforms"
-            description="Hackathons are scattered across multiple ecosystems."
+            icon={<Globe2 className="size-5" />}
+            title="Scattered Platforms"
+            description="Hackathons are spread across multiple websites, making discovery slow and frustrating."
           />
           <ProblemCard
+            icon={<Clock3 className="size-5" />}
             title="Missed Deadlines"
-            description="Students discover opportunities after registrations close."
+            description="Students often discover great hackathons after registrations have already closed."
           />
           <ProblemCard
+            icon={<Search className="size-5" />}
             title="Information Overload"
-            description="Too many platforms, too much manual searching."
+            description="Too many platforms, too much information, and no easy way to find what matters."
           />
           <ProblemCard
+            icon={<Brain className="size-5" />}
             title="No Personalization"
-            description="Students receive generic opportunities instead of relevant ones."
+            description="Students receive generic listings instead of opportunities matched to their skills."
           />
         </div>
         <div className="mt-6 rounded-[1.75rem] border border-border bg-muted/40 px-6 py-5 text-sm font-medium text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.03)]">
-          Discovery is the bottleneck, not opportunity.
+          The problem isn&apos;t the lack of hackathons - it&apos;s discovering the right ones in time.
         </div>
       </SectionShell>
 

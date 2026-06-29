@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GitBranch, Loader2, Mail, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { Loader2, Mail, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTheme } from "next-themes";
 
@@ -82,7 +82,7 @@ function SocialButton({
   label: string;
 }) {
   return (
-    <Button variant="outline" type="button" className="h-11 w-full justify-center gap-3 px-4">
+    <Button variant="outline" type="button" className="h-11 w-full max-w-[21rem] justify-center gap-3 px-4">
       {icon}
       {label}
     </Button>
@@ -212,31 +212,23 @@ export function RegisterForm() {
     passwordValue === confirmPassword;
 
   return (
-    <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(31,25,48,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
-      <div className="space-y-6">
-        <div className="space-y-4">
+    <Card className="w-full border-border/60 bg-surface/85 p-4 shadow-[0_24px_70px_rgba(31,25,48,0.12)] backdrop-blur-xl sm:p-5 lg:p-6 dark:bg-slate-950/35">
+      <div className="space-y-4 sm:space-y-5">
+        <div className="space-y-3">
           <Logo isDark={isDark} />
-          <div className="space-y-2">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              WELCOME TO HACKRADAR
-            </p>
+          <div className="space-y-1.5">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">Create your account</h1>
-            <p className="max-w-md text-sm leading-6 text-muted-foreground">
-              Start discovering hackathons, competitions, internships and innovation challenges
-              personalized for you.
-            </p>
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="flex justify-center">
           <SocialButton icon={<Mail className="size-4" />} label="Continue with Google" />
-          <SocialButton icon={<GitBranch className="size-4" />} label="Continue with GitHub" />
         </div>
 
         <Divider />
 
-        <form className="space-y-4" aria-label="Create account form" onSubmit={onSubmit}>
-          <div className="grid gap-4 sm:grid-cols-2">
+        <form className="space-y-3.5" aria-label="Create account form" onSubmit={onSubmit}>
+          <div className="grid gap-3 sm:grid-cols-2">
             <AuthField
               label="First Name"
               required
@@ -304,7 +296,7 @@ export function RegisterForm() {
             <RequirementItem label="One special character" met={passwordRules.special} />
           </ul>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <label className="flex items-start gap-3 text-sm text-muted-foreground">
               <input
                 {...form.register("terms")}
@@ -357,7 +349,6 @@ export function RegisterForm() {
             </Link>
             .
           </p>
-
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link href="/login" className="font-medium text-foreground transition-colors hover:text-primary">

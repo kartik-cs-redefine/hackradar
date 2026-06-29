@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Logo } from "@/components/layout/logo";
+import { GlowingStarsBackground } from "@/components/ui/glowing-stars";
 import { cn } from "@/lib/utils";
 
 type AuthLayoutProps = {
@@ -20,7 +21,8 @@ export function AuthLayout({ children, topLeftVariant = "back", topRightAction }
   const isDark = resolvedTheme === "dark";
 
   return (
-    <main className="min-h-screen overflow-hidden bg-background">
+    <main className="relative isolate min-h-screen overflow-hidden bg-background">
+      {isDark ? <GlowingStarsBackground /> : null}
       <div className="fixed left-6 top-6 z-20 sm:left-6 sm:top-6">
         {topLeftVariant === "logo" ? (
           <Logo isDark={isDark} />
@@ -40,12 +42,11 @@ export function AuthLayout({ children, topLeftVariant = "back", topRightAction }
           </Link>
         )}
       </div>
-        <div className="fixed right-6 top-6 z-20 sm:right-6 sm:top-6">{topRightAction}</div>
+      <div className="fixed right-6 top-6 z-20 sm:right-6 sm:top-6">{topRightAction}</div>
 
       <section
         className={cn(
-          "flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8",
-          "bg-background"
+          "relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8"
         )}
       >
         <motion.div

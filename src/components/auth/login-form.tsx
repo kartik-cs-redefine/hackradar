@@ -15,7 +15,7 @@ export function LoginForm() {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <Card className="w-full border-border/70 bg-surface/95 p-5 shadow-[0_16px_50px_rgba(31,25,48,0.08)] backdrop-blur-sm sm:p-6 lg:p-8">
+    <Card className="w-full border-border/60 bg-surface/85 p-5 shadow-[0_24px_70px_rgba(31,25,48,0.12)] backdrop-blur-xl sm:p-6 lg:p-8 dark:bg-slate-950/35">
       <div className="space-y-6">
         <div className="space-y-4">
           <Logo isDark={isDark} />

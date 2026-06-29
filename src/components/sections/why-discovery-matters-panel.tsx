@@ -1,169 +1,235 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Check, X } from "lucide-react";
+import { useState } from "react";
+import { Check, HelpCircle, X } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
-type ComparisonItem = {
-  left: string;
-  right: string;
+type ComparisonRow = {
+  label: string;
+  helper: string;
+  hackRadar: string;
+  otherPlatforms: string;
+  otherTone?: "x" | "partial";
 };
 
-const comparisonItems: ComparisonItem[] = [
+const comparisonRows: ComparisonRow[] = [
   {
-    left: "Visit multiple hackathon platforms every day",
-    right: "Discover verified hackathons from one platform",
+    label: "Discover hackathons from multiple platforms",
+    helper: "Browse verified opportunities from many sources in one place.",
+    hackRadar: "Always on",
+    otherPlatforms: "Manual searching",
+    otherTone: "partial",
   },
   {
-    left: "Track registrations and deadlines manually",
-    right: "AI-powered personalized recommendations",
+    label: "AI-powered recommendations",
+    helper: "Find hackathons matching your skills.",
+    hackRadar: "Personalized",
+    otherPlatforms: "Generic listings",
+    otherTone: "partial",
   },
   {
-    left: "Miss important submissions and PPT deadlines",
-    right: "Smart registration & submission reminders",
+    label: "Smart deadline reminders",
+    helper: "Never miss registrations or submissions.",
+    hackRadar: "Automated alerts",
+    otherPlatforms: "Manual tracking",
+    otherTone: "x",
   },
   {
-    left: "No centralized event timeline",
-    right: "Complete event timeline tracking",
+    label: "Complete event timelines",
+    helper: "See every milestone from registration to results.",
+    hackRadar: "End-to-end view",
+    otherPlatforms: "Scattered updates",
+    otherTone: "x",
   },
   {
-    left: "Scattered reminders across different platforms",
-    right: "Personalized notification preferences",
+    label: "Personalized matching",
+    helper: "Surface opportunities aligned to your profile.",
+    hackRadar: "Skill-based",
+    otherPlatforms: "Broad discovery",
+    otherTone: "partial",
   },
   {
-    left: "Difficult to manage multiple hackathons",
-    right: "Manage every enrolled hackathon from one dashboard",
+    label: "Bookmark opportunities",
+    helper: "Save promising events for later review.",
+    hackRadar: "Built in",
+    otherPlatforms: "Separate tools",
+    otherTone: "partial",
+  },
+  {
+    label: "Unified dashboard",
+    helper: "Manage everything from one place.",
+    hackRadar: "One workspace",
+    otherPlatforms: "Many tabs",
+    otherTone: "x",
+  },
+  {
+    label: "Telegram & Email alerts",
+    helper: "Get updates where you already work.",
+    hackRadar: "Integrated alerts",
+    otherPlatforms: "Manual follow-up",
+    otherTone: "x",
+  },
+  {
+    label: "Track enrolled hackathons",
+    helper: "Monitor progress without juggling platforms.",
+    hackRadar: "Centralized tracking",
+    otherPlatforms: "Disconnected",
+    otherTone: "x",
   },
 ];
 
-function useInView<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
+const containerVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: "easeOut", staggerChildren: 0.05, delayChildren: 0.04 },
+  },
+};
 
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+const rowVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+};
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.25 }
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, inView };
-}
-
-function Row({
-  text,
-  icon,
+function StatusMark({
+  mode,
   active,
-  visible,
-  onHover,
-  tone,
 }: {
-  text: string;
-  icon: "x" | "check";
+  mode: "check" | "x" | "partial";
   active: boolean;
-  visible: boolean;
-  onHover: () => void;
-  tone: "left" | "right";
 }) {
   return (
-    <button
-      type="button"
-      onMouseEnter={onHover}
-      onFocus={onHover}
+    <span
       className={cn(
-        "flex w-full items-start gap-3 rounded-2xl px-5 py-4 text-left outline-none transition-[background-color,box-shadow,transform,border-color,opacity] duration-200 ease-in-out",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
-        active
-          ? tone === "left"
-            ? "bg-[#FFF7F7] shadow-[0_8px_24px_rgba(220,38,38,0.08)]"
-            : "bg-[rgba(255,255,255,0.12)] border border-[rgba(255,255,255,0.08)] shadow-[0_8px_24px_rgba(124,58,237,0.08)]"
-          : tone === "right"
-            ? "bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.12)]"
-            : "bg-transparent hover:bg-background/40"
+        "inline-flex size-7 items-center justify-center rounded-full border transition-transform duration-200 ease-in-out",
+        active && "scale-105",
+        mode === "check"
+          ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-400 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-300"
+          : mode === "partial"
+            ? "border-slate-300 bg-slate-100 text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
+            : "border-rose-500/25 bg-rose-500/10 text-rose-500 dark:border-rose-400/25 dark:bg-rose-400/10 dark:text-rose-300"
       )}
-      style={{ transitionDelay: `${visible ? 0 : 0}ms` }}
-      aria-label={text}
     >
-      <span
-        className={cn(
-          "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full",
-          icon === "x" ? "text-[#DC2626]" : "text-[#86EFAC]"
-        )}
-      >
-        {icon === "x" ? <X className="size-3.5" /> : <Check className="size-3.5" />}
-      </span>
-      <span
-        className={cn(
-          "pt-px text-sm leading-6",
-          tone === "right" ? "text-[rgba(255,255,255,0.92)]" : "text-foreground"
-        )}
-      >
-        {text}
-      </span>
-    </button>
+      {mode === "check" ? (
+        <Check className="size-4" strokeWidth={2.5} />
+      ) : mode === "partial" ? (
+        <span className="h-0.5 w-3 rounded-full bg-current" />
+      ) : (
+        <X className="size-4" strokeWidth={2.5} />
+      )}
+    </span>
+  );
+}
+
+function ComparisonRowItem({
+  row,
+  index,
+  active,
+  onHover,
+}: {
+  row: ComparisonRow;
+  index: number;
+  active: boolean;
+  onHover: (index: number | null) => void;
+}) {
+  return (
+    <motion.div
+      variants={rowVariants}
+      onMouseEnter={() => onHover(index)}
+      onFocus={() => onHover(index)}
+      onMouseLeave={() => onHover(null)}
+      className={cn(
+        "group grid items-center gap-3 rounded-2xl border px-4 py-3.5 text-sm outline-none transition-[all] duration-[220ms] ease-in-out sm:min-h-[60px] sm:grid-cols-[1.45fr_0.8fr_0.85fr] sm:gap-4 sm:px-5 sm:py-3",
+        "bg-surface/80 border-border/50 dark:bg-white/[0.03] dark:border-white/8",
+        active
+          ? "border-l-2 border-l-[#A855F7] bg-[rgba(139,92,246,0.08)] shadow-[0_0_0_1px_rgba(168,85,247,0.10),0_0_18px_rgba(168,85,247,0.12)]"
+          : "hover:border-l-2 hover:border-l-[#A855F7] hover:bg-[rgba(139,92,246,0.06)] hover:shadow-[0_0_0_1px_rgba(168,85,247,0.08)]",
+        index % 2 === 0 ? "dark:bg-white/[0.04]" : ""
+      )}
+      tabIndex={0}
+      aria-label={row.label}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className={cn(
+            "inline-flex size-1.5 shrink-0 rounded-full bg-primary/70 transition-colors duration-200",
+            active && "bg-primary"
+          )}
+        />
+        <p className="font-semibold text-foreground">{row.label}</p>
+      </div>
+
+      <div className="flex items-center justify-center gap-[10px] sm:justify-center">
+        <span className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:hidden">
+          HackRadar
+        </span>
+        <div className="flex items-center justify-center gap-[10px] text-foreground">
+          <StatusMark mode="check" active={active} />
+          <span className="font-medium text-[0.93rem]">{row.hackRadar}</span>
+        </div>
+      </div>
+
+      <div className="relative flex items-center justify-center gap-[10px] sm:justify-center">
+        <span className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:hidden">
+          Other
+        </span>
+        <div className="flex items-center justify-center gap-[10px] text-muted-foreground">
+          <StatusMark mode={row.otherTone ?? "x"} active={active} />
+          <span className="font-medium text-[0.93rem]">{row.otherPlatforms}</span>
+        </div>
+
+        <div
+          className={cn(
+            "pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 translate-x-[108%] items-center gap-2 rounded-full border border-[#A855F7]/20 bg-surface/95 px-3 py-1.5 text-xs font-medium text-foreground shadow-[0_10px_24px_rgba(31,25,48,0.08)] backdrop-blur-md transition-all duration-200 ease-in-out sm:flex",
+            active ? "opacity-100" : "opacity-0"
+          )}
+        >
+          <HelpCircle className="size-3.5 text-primary" />
+          <span>{row.helper}</span>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
 export function WhyDiscoveryMattersPanel() {
-  const { ref, inView } = useInView<HTMLDivElement>();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <div ref={ref} className="grid gap-4 lg:grid-cols-2">
-      <div
-        className="rounded-[2rem] border border-border bg-surface p-8 shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-[box-shadow,border-color,transform] duration-200 ease-in-out hover:border-[#DC2626]/25 hover:shadow-[0_12px_30px_rgba(220,38,38,0.06)]"
-        onMouseLeave={() => setActiveIndex(null)}
-      >
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Without HackRadar
-        </p>
-        <div className="mt-6 space-y-4">
-          {comparisonItems.map((item, index) => (
-            <Row
-              key={item.left}
-              text={item.left}
-              icon="x"
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.25 }}
+      className="mx-auto w-full max-w-[1100px] overflow-hidden rounded-[2rem] border border-border/50 bg-surface/80 p-3.5 shadow-[0_10px_30px_rgba(0,0,0,0.04)] backdrop-blur-xl dark:border-white/8 dark:bg-white/[0.03] dark:shadow-[0_20px_60px_rgba(0,0,0,0.22)] sm:p-4"
+    >
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#A855F7]/20 bg-[rgba(139,92,246,0.08)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary dark:bg-[rgba(139,92,246,0.10)]">
+        <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.55)]" />
+        One dashboard. Less friction.
+      </div>
+
+      <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-border/50 bg-background/70 dark:border-white/8 dark:bg-black/10">
+        <div className="sticky top-0 z-10 hidden grid-cols-[1.45fr_0.8fr_0.85fr] gap-3 border-b border-border/50 bg-background/90 px-4 py-2.5 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-md dark:border-white/8 dark:bg-[#0f172a]/90 sm:grid sm:gap-4 sm:px-5">
+          <div>Capability</div>
+          <div className="text-center">HackRadar</div>
+          <div className="text-center">Other Platforms</div>
+        </div>
+
+        <div className="divide-y divide-border/50 dark:divide-white/8">
+          {comparisonRows.map((row, index) => (
+            <ComparisonRowItem
+              key={row.label}
+              row={row}
+              index={index}
               active={activeIndex === index}
-              visible={inView}
-              tone="left"
-              onHover={() => setActiveIndex(index)}
+              onHover={setActiveIndex}
             />
           ))}
         </div>
       </div>
-      <div
-        className="rounded-[2rem] border border-[#8B5CF6]/20 bg-[linear-gradient(180deg,#8B5CF6_0%,#7C3AED_100%)] p-8 text-background shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-[box-shadow,transform,border-color] duration-200 ease-in-out hover:-translate-y-0.5 hover:border-[#A78BFA]/25 hover:shadow-[0_14px_38px_rgba(124,58,237,0.14)]"
-        onMouseLeave={() => setActiveIndex(null)}
-      >
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFFFFF]">
-          With HackRadar
-        </p>
-        <div className="mt-6 space-y-4">
-          {comparisonItems.map((item, index) => (
-            <Row
-              key={item.right}
-              text={item.right}
-              icon="check"
-              active={activeIndex === index}
-              visible={inView}
-              tone="right"
-              onHover={() => setActiveIndex(index)}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+    </motion.div>
   );
 }

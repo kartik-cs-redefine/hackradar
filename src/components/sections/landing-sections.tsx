@@ -45,14 +45,6 @@ type StepCardProps = {
   description: string;
 };
 
-type ComparisonRowProps = {
-  label: string;
-  hackRadar: boolean | string;
-  devfolio: boolean | string;
-  unstop: boolean | string;
-  hack2skill: boolean | string;
-};
-
 type OpportunityCardProps = {
   title: string;
   source: string;
@@ -71,43 +63,6 @@ type FooterColumnProps = {
   title: string;
   links: Array<{ label: string; href: string }>;
 };
-const comparisonRows = [
-  {
-    label: "Cross-platform discovery",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "Unified search",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "AI recommendation",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "Deadline tracking",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "Personalized matching",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-];
 const opportunityCards = [
   {
     title: "Google Solution Challenge",
@@ -250,36 +205,6 @@ export function StepCard({ step, title, description }: StepCardProps) {
       <h3 className="mt-5 text-lg font-semibold tracking-tight text-foreground">{title}</h3>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
     </article>
-  );
-}
-
-function TruthCell({ value }: { value: boolean | string }) {
-  if (typeof value === "boolean") {
-    return value ? (
-      <Check className="mx-auto size-4 text-success" />
-    ) : (
-      <span className="mx-auto block size-2.5 rounded-full bg-border" />
-    );
-  }
-
-  return <span className="text-sm text-muted-foreground">{value}</span>;
-}
-
-export function ComparisonRow({
-  label,
-  hackRadar,
-  devfolio,
-  unstop,
-  hack2skill,
-}: ComparisonRowProps) {
-  return (
-    <div className="grid grid-cols-[1.6fr_repeat(4,minmax(0,1fr))] gap-4 border-t border-border px-6 py-5 text-sm">
-      <div className="font-medium text-foreground">{label}</div>
-      <TruthCell value={hackRadar} />
-      <TruthCell value={devfolio} />
-      <TruthCell value={unstop} />
-      <TruthCell value={hack2skill} />
-    </div>
   );
 }
 
@@ -476,26 +401,6 @@ export function LandingSections() {
       </SectionShell>
 
       <SectionShell
-        id="differentiators"
-        eyebrow="Why Students Choose HackRadar"
-        title="Why Students Choose HackRadar"
-        subtitle="Stop searching across multiple websites. HackRadar helps you discover opportunities, track deadlines and stay updated-all from one platform."
-      >
-        <div className="overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
-          <div className="grid grid-cols-[1.6fr_repeat(4,minmax(0,1fr))] gap-4 border-b border-border px-6 py-4 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            <div>Capability</div>
-            <div>HackRadar</div>
-            <div>Devfolio</div>
-            <div>Unstop</div>
-            <div>Hack2Skill</div>
-          </div>
-          {comparisonRows.map((row) => (
-            <ComparisonRow key={row.label} {...row} />
-          ))}
-        </div>
-      </SectionShell>
-
-      <SectionShell
         id="featured-opportunities"
         eyebrow="Featured Opportunities"
         title="Featured Opportunities"
@@ -508,7 +413,7 @@ export function LandingSections() {
         </div>
         <div className="mt-8 flex justify-center">
           <Button variant="outline" size="lg" asChild>
-            <Link href="/opportunities">View All Opportunities</Link>
+            <Link href="/hackathons">View All Opportunities</Link>
           </Button>
         </div>
       </SectionShell>

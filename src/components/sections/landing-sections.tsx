@@ -14,6 +14,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { StatsSection } from "./stats-section";
+import { HackRadarWorkflowGrid } from "./hackradar-workflow-grid";
+import { HackRadarJourneyAccordion } from "./hackradar-journey-accordion";
+import { WhyDiscoveryMattersPanel } from "./why-discovery-matters-panel";
 
 type SectionShellProps = {
   eyebrow?: string;
@@ -68,7 +71,43 @@ type FooterColumnProps = {
   title: string;
   links: Array<{ label: string; href: string }>;
 };
-
+const comparisonRows = [
+  {
+    label: "Cross-platform discovery",
+    hackRadar: true,
+    devfolio: false,
+    unstop: false,
+    hack2skill: false,
+  },
+  {
+    label: "Unified search",
+    hackRadar: true,
+    devfolio: false,
+    unstop: false,
+    hack2skill: false,
+  },
+  {
+    label: "AI recommendation",
+    hackRadar: true,
+    devfolio: false,
+    unstop: false,
+    hack2skill: false,
+  },
+  {
+    label: "Deadline tracking",
+    hackRadar: true,
+    devfolio: false,
+    unstop: false,
+    hack2skill: false,
+  },
+  {
+    label: "Personalized matching",
+    hackRadar: true,
+    devfolio: false,
+    unstop: false,
+    hack2skill: false,
+  },
+];
 const opportunityCards = [
   {
     title: "Google Solution Challenge",
@@ -115,44 +154,6 @@ const roadmapItems = [
   { phase: "Phase 4", title: "Portfolio Builder" },
   { phase: "Phase 5", title: "Organizer Dashboard" },
   { phase: "Phase 6", title: "AI Career Coach" },
-];
-
-const comparisonRows = [
-  {
-    label: "Cross-platform discovery",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "Unified search",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "AI recommendation",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "Deadline tracking",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
-  {
-    label: "Personalized matching",
-    hackRadar: true,
-    devfolio: false,
-    unstop: false,
-    hack2skill: false,
-  },
 ];
 
 const footerColumns = [
@@ -438,31 +439,21 @@ export function LandingSections() {
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
             <div className="grid gap-4 sm:grid-cols-3">
-              <FeatureCard title="Unified Discovery" description="One place for every relevant opportunity." />
-              <FeatureCard title="Personalized Recommendations" description="Signals shaped by skills and interests." />
-              <FeatureCard title="Timely Alerts" description="Deadlines surfaced before they disappear." />
+              <FeatureCard
+                title="Smart Discovery"
+                description="Discover verified hackathons from multiple trusted platforms without endless searching."
+              />
+              <FeatureCard
+                title="AI-Powered Recommendations"
+                description="Receive personalized hackathon suggestions based on your skills, interests and experience level."
+              />
+              <FeatureCard
+                title="Smart Alerts & Tracking"
+                description="Stay informed with reminders for registrations, submissions, presentations and every important milestone."
+              />
             </div>
           </div>
-          <div className="rounded-[2rem] border border-border bg-surface p-8 shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
-            <div className="space-y-8">
-              {[
-                "Discover",
-                "Personalize",
-                "Track",
-                "Apply",
-              ].map((item, index) => (
-                <div key={item} className="flex items-center gap-4">
-                  <div className="flex size-10 items-center justify-center rounded-full border border-border bg-background text-sm font-semibold text-foreground">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-base font-medium text-foreground">{item}</p>
-                  </div>
-                  {index < 3 ? <ChevronDown className="size-5 shrink-0 text-muted-foreground" /> : null}
-                </div>
-              ))}
-            </div>
-          </div>
+          <HackRadarJourneyAccordion />
         </div>
       </SectionShell>
 
@@ -470,77 +461,25 @@ export function LandingSections() {
         id="how-it-works"
         eyebrow="How HackRadar Works"
         title="How HackRadar Works"
-        subtitle="Six reusable steps explain the product from source collection to portfolio growth."
+        subtitle="A simple workflow that helps you discover hackathons, track important deadlines and never miss an opportunity."
       >
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <StepCard
-            step="1"
-            title="Discover Sources"
-            description="Collect hackathons from multiple platforms."
-          />
-          <StepCard
-            step="2"
-            title="Aggregate Data"
-            description="Normalize all opportunity data."
-          />
-          <StepCard
-            step="3"
-            title="Build Student Profile"
-            description="Skills, interests and preferences."
-          />
-          <StepCard
-            step="4"
-            title="AI Match Engine"
-            description="Recommend relevant opportunities."
-          />
-          <StepCard
-            step="5"
-            title="Track Deadlines"
-            description="Never miss registrations."
-          />
-          <StepCard
-            step="6"
-            title="Participate & Grow"
-            description="Apply and build your portfolio."
-          />
-        </div>
+        <HackRadarWorkflowGrid />
       </SectionShell>
 
       <SectionShell
         id="why-discovery-matters"
         eyebrow="Why Discovery Matters"
-        title="Why Discovery Matters"
+        title="Why Students Choose HackRadar"
+        subtitle="Stop searching across multiple websites. HackRadar helps you discover opportunities, track deadlines and stay updated-all from one platform."
       >
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="rounded-[2rem] border border-border bg-surface p-8 shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              Traditional student journey
-            </p>
-            <ul className="mt-6 space-y-4 text-sm text-muted-foreground">
-              <li className="rounded-2xl bg-background px-4 py-4">Multiple platforms</li>
-              <li className="rounded-2xl bg-background px-4 py-4">Manual searching</li>
-              <li className="rounded-2xl bg-background px-4 py-4">Missed deadlines</li>
-              <li className="rounded-2xl bg-background px-4 py-4">Generic recommendations</li>
-            </ul>
-          </div>
-          <div className="rounded-[2rem] border border-border bg-primary p-8 text-background shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-background/70">
-              HackRadar
-            </p>
-            <ul className="mt-6 space-y-4 text-sm">
-              <li className="rounded-2xl bg-background/10 px-4 py-4">One platform</li>
-              <li className="rounded-2xl bg-background/10 px-4 py-4">AI Discovery</li>
-              <li className="rounded-2xl bg-background/10 px-4 py-4">Smart Alerts</li>
-              <li className="rounded-2xl bg-background/10 px-4 py-4">Personalized Matching</li>
-            </ul>
-          </div>
-        </div>
+        <WhyDiscoveryMattersPanel />
       </SectionShell>
 
       <SectionShell
         id="differentiators"
-        eyebrow="Why HackRadar Is Different"
-        title="Why HackRadar Is Different"
+        eyebrow="Why Students Choose HackRadar"
+        title="Why Students Choose HackRadar"
+        subtitle="Stop searching across multiple websites. HackRadar helps you discover opportunities, track deadlines and stay updated-all from one platform."
       >
         <div className="overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
           <div className="grid grid-cols-[1.6fr_repeat(4,minmax(0,1fr))] gap-4 border-b border-border px-6 py-4 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
@@ -625,3 +564,4 @@ export function LandingSections() {
     </>
   );
 }
+

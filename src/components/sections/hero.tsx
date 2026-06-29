@@ -54,19 +54,19 @@ type HackathonCardProps = {
 const whyHackRadar = [
   {
     title: "AI Recommendations",
-    description: "Personalized hackathon suggestions based on user skills and interests.",
+    description: "Receive personalized hackathon suggestions based on your skills, interests, and experience level.",
   },
   {
     title: "Smart Deadline Alerts",
-    description: "Receive reminders before important registration and submission deadlines.",
+    description: "Stay informed with timely reminders for registrations, submissions, presentations, and important event milestones.",
   },
   {
-    title: "Unified Tracking",
-    description: "Track all enrolled hackathons from one dashboard.",
+    title: "Event Timelines",
+    description: "Access complete event schedules, including registration deadlines, submission dates, mentoring sessions, and final presentations.",
   },
   {
-    title: "Cross-Platform Discovery",
-    description: "Discover hackathons from multiple trusted platforms in one place.",
+    title: "Unified Discovery",
+    description: "Explore hackathons from multiple trusted platforms through one centralized and organized experience.",
   },
 ];
 
@@ -75,11 +75,11 @@ const perfectFor = [
   "Developers",
   "Student Teams",
   "Innovation Clubs",
-  "First-time Hackathon Participants",
+  "Tech Communities",
 ];
 
 const currentMvp = [
-  "AI Recommendation Engine",
+  "AI-Powered Recommendations",
   "Explore Hackathons",
   "Enrolled Dashboard",
   "Event Timeline",
@@ -88,11 +88,11 @@ const currentMvp = [
 ];
 
 const futureRoadmap = [
-  "Internship Discovery",
-  "Coding Competitions",
-  "Scholarships",
-  "Resume Analyzer",
-  "Team Matching",
+  "Calendar Integration",
+  "One-Click Event Reminders",
+  "Personalized Alert Rules",
+  "AI Priority Scoring",
+  "Cross-Platform Event Sync",
 ];
 
 function HackathonCard({
@@ -151,8 +151,7 @@ function LearnMoreModal() {
   return (
     <div className="space-y-6">
       <p className="max-w-3xl text-sm leading-6 text-muted-foreground sm:text-base">
-        HackRadar is an AI-powered platform that helps students discover, track, and manage hackathons from
-        multiple platforms in one place.
+       Instead of searching across multiple websites, HackRadar brings verified hackathons, event timelines, smart reminders, and personalized recommendations together in one place—making it easier to focus on learning, building, and competing.
       </p>
 
       <div className="space-y-4">
@@ -185,7 +184,7 @@ function LearnMoreModal() {
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground">Current MVP</h3>
+        <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground">CURRENT FEATURES</h3>
         <div className="grid gap-2 sm:grid-cols-2">
           {currentMvp.map((item) => (
             <div key={item} className="flex items-center gap-2 rounded-2xl border border-border bg-background px-4 py-3">
@@ -198,7 +197,7 @@ function LearnMoreModal() {
 
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground">Future Roadmap</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground">Coming Soon</h3>
           <span className="rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
             Coming Soon
           </span>

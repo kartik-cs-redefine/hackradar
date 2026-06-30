@@ -286,6 +286,7 @@ export function LandingSections() {
         eyebrow="Introducing HackRadar"
         title="Introducing HackRadar"
         subtitle="HackRadar solves fragmented discovery through one intelligent platform."
+        className="mt-4 sm:mt-6 lg:mt-8 xl:mt-10"
       >
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>

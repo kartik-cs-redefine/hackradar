@@ -82,7 +82,7 @@ function SocialButton({
   label: string;
 }) {
   return (
-    <Button variant="outline" type="button" className="h-11 w-full max-w-[21rem] justify-center gap-3 px-4">
+    <Button variant="outline" type="button" className="h-11 w-full justify-center gap-3 px-4">
       {icon}
       {label}
     </Button>

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GitBranch, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,7 @@ export function LoginForm() {
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div>
           <Button
             variant="outline"
             type="button"
@@ -50,14 +50,6 @@ export function LoginForm() {
           >
             <Mail className="size-4" />
             Continue with Google
-          </Button>
-          <Button
-            variant="outline"
-            type="button"
-            className="h-11 w-full justify-center gap-3 px-4"
-          >
-            <GitBranch className="size-4" />
-            Continue with GitHub
           </Button>
         </div>
 

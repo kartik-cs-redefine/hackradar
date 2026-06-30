@@ -1,10 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import {
-  ArrowRight,
   Brain,
   Check,
-  ChevronDown,
   CircleCheckBig,
   Clock3,
   Globe2,
@@ -16,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { StatsSection } from "./stats-section";
 import { HackRadarWorkflowGrid } from "./hackradar-workflow-grid";
 import { HackRadarJourneyAccordion } from "./hackradar-journey-accordion";
+import { LandingCta } from "./landing-cta";
 import { WhyDiscoveryMattersPanel } from "./why-discovery-matters-panel";
 
 type SectionShellProps = {
@@ -39,24 +38,11 @@ type FeatureCardProps = {
   icon?: ReactNode;
 };
 
-type StepCardProps = {
-  step: string;
-  title: string;
-  description: string;
-};
-
 type OpportunityCardProps = {
   title: string;
   source: string;
   deadline: string;
   category: string;
-};
-
-type TimelineItemProps = {
-  phase: string;
-  title: string;
-  description?: string;
-  active?: boolean;
 };
 
 type FooterColumnProps = {
@@ -102,22 +88,13 @@ const opportunityCards = [
   },
 ];
 
-const roadmapItems = [
-  { phase: "Phase 1", title: "Hackathons", active: true },
-  { phase: "Phase 2", title: "Internships" },
-  { phase: "Phase 3", title: "Scholarships" },
-  { phase: "Phase 4", title: "Portfolio Builder" },
-  { phase: "Phase 5", title: "Organizer Dashboard" },
-  { phase: "Phase 6", title: "AI Career Coach" },
-];
-
 const footerColumns = [
   {
     title: "Product",
     links: [
       { label: "Features", href: "#introducing-hackradar" },
       { label: "Hackathons", href: "#featured-opportunities" },
-      { label: "Internships", href: "#roadmap" },
+      { label: "Internships", href: "#featured-opportunities" },
       { label: "Competitions", href: "#featured-opportunities" },
     ],
   },
@@ -191,23 +168,6 @@ export function FeatureCard({ title, description, icon }: FeatureCardProps) {
   );
 }
 
-export function StepCard({ step, title, description }: StepCardProps) {
-  return (
-    <article className="rounded-[1.75rem] border border-border bg-surface p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          {step}
-        </span>
-        <div className="flex size-9 items-center justify-center rounded-full bg-muted text-foreground">
-          <ChevronDown className="size-4 -rotate-90" />
-        </div>
-      </div>
-      <h3 className="mt-5 text-lg font-semibold tracking-tight text-foreground">{title}</h3>
-      <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
-    </article>
-  );
-}
-
 export function OpportunityCard({
   title,
   source,
@@ -241,30 +201,6 @@ export function OpportunityCard({
   );
 }
 
-export function TimelineItem({ phase, title, description, active }: TimelineItemProps) {
-  return (
-    <div className="flex items-start gap-4">
-      <div
-        className={cn(
-          "mt-1 flex size-10 items-center justify-center rounded-full border",
-          active ? "border-primary bg-primary text-background" : "border-border bg-surface text-foreground"
-        )}
-      >
-        <span className="text-xs font-semibold">{phase.replace("Phase ", "")}</span>
-      </div>
-      <div className="pb-10">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          {phase}
-        </p>
-        <h3 className="mt-2 text-lg font-semibold tracking-tight text-foreground">{title}</h3>
-        {description ? (
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
 export function CTASection() {
   return (
     <section className="py-20 sm:py-24 lg:py-28">
@@ -281,17 +217,7 @@ export function CTASection() {
               Discover the opportunities that matter, track them intelligently, and apply with
               confidence.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Button asChild size="lg" className="bg-[#2563EB] text-white hover:bg-[#1D4ED8]">
-                <Link href="/get-started">Get Started</Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="#featured-opportunities">
-                  Explore Opportunities
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-            </div>
+            <LandingCta />
           </div>
         </div>
       </div>
@@ -419,30 +345,6 @@ export function LandingSections() {
       </SectionShell>
 
       <StatsSection />
-
-      <SectionShell
-        id="roadmap"
-        eyebrow="Roadmap"
-        title="Roadmap"
-        subtitle="HackRadar expands from discovery into the broader student opportunity stack."
-      >
-        <div className="rounded-[2rem] border border-border bg-surface p-8 shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
-          <div className="space-y-0">
-            {roadmapItems.map((item, index) => (
-              <div key={item.phase}>
-                <TimelineItem
-                  phase={item.phase}
-                  title={item.title}
-                  active={item.active}
-                />
-                {index < roadmapItems.length - 1 ? (
-                  <div className="ml-[1.3125rem] h-10 w-px bg-border" />
-                ) : null}
-              </div>
-            ))}
-          </div>
-        </div>
-      </SectionShell>
 
       <CTASection />
 

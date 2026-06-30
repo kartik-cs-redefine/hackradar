@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { GitBranch, Mail } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -9,10 +10,18 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Divider } from "./divider";
 import { Logo } from "@/components/layout/logo";
+import { useAuth } from "@/providers";
 
 export function LoginForm() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+  const router = useRouter();
+  const { signIn } = useAuth();
+
+  const handleSignIn = () => {
+    signIn();
+    router.push("/dashboard");
+  };
 
   return (
     <Card className="w-full border-border/60 bg-surface/85 p-5 shadow-[0_24px_70px_rgba(31,25,48,0.12)] backdrop-blur-xl sm:p-6 lg:p-8 dark:bg-slate-950/35">
@@ -82,7 +91,7 @@ export function LoginForm() {
             </button>
           </div>
 
-          <Button type="button" size="lg" className="w-full">
+          <Button type="button" size="lg" className="w-full" onClick={handleSignIn}>
             Sign In
           </Button>
 

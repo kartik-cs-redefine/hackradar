@@ -54,6 +54,7 @@ const goals = ["Win Hackathons", "Learning", "Internship", "Networking", "Build 
 const modes = ["Online", "Offline", "Hybrid"];
 const availability = ["Weekdays", "Weekends", "Anytime"];
 const experienceLevels: UserProfile["experienceLevel"][] = ["Beginner", "Intermediate", "Advanced"];
+const telegramVerificationId = "483921";
 
 function ToggleGroup({
   label,
@@ -128,6 +129,43 @@ function TelegramQrCard() {
             className="h-auto w-full rounded-xl object-contain"
             priority
           />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TelegramVerificationCard() {
+  const [copied, setCopied] = useState(false);
+
+  const copyId = async () => {
+    await navigator.clipboard.writeText(telegramVerificationId);
+    setCopied(true);
+    toast.success("Copied!");
+
+    window.setTimeout(() => {
+      setCopied(false);
+    }, 1800);
+  };
+
+  return (
+    <div className="mx-auto w-full max-w-sm rounded-3xl border border-border/70 bg-background p-4 shadow-[0_18px_40px_rgba(0,0,0,0.04)] dark:bg-slate-950/55">
+      <div className="rounded-2xl border border-border/60 bg-surface p-5 text-center">
+        <p className="text-sm font-semibold tracking-tight text-foreground">Your Telegram Verification ID</p>
+        <p className="mt-2 text-xs leading-5 text-muted-foreground">
+          Use this unique ID when the HackRadar Telegram Bot asks for your verification code.
+        </p>
+
+        <div className="mt-5 rounded-2xl border border-border/60 bg-background px-4 py-5">
+          <p className="font-mono text-3xl font-semibold tracking-[0.25em] text-foreground sm:text-4xl">
+            {telegramVerificationId}
+          </p>
+        </div>
+
+        <div className="mt-4 flex justify-center">
+          <Button type="button" variant="secondary" className="h-10 px-4" onClick={copyId}>
+            {copied ? "Copied!" : "Copy ID"}
+          </Button>
         </div>
       </div>
     </div>
@@ -305,6 +343,12 @@ export default function ProfilePage() {
                       Scan the QR code or click the button to connect with the official HackRadar Telegram Bot.
                     </p>
                   </div>
+
+                  <TelegramVerificationCard />
+
+                  <p className="text-center text-xs leading-5 text-muted-foreground">
+                    When the Telegram Bot asks for your HackRadar ID, simply copy and paste this code.
+                  </p>
                 </div>
               </SectionCard>
 

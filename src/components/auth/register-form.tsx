@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Mail, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { Loader2, Mail, Eye, EyeOff } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTheme } from "next-themes";
 
@@ -14,7 +14,6 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Divider } from "./divider";
 import { Logo } from "@/components/layout/logo";
-import { cn } from "@/lib/utils";
 
 const registerSchema = z
   .object({
@@ -25,6 +24,7 @@ const registerSchema = z
       .min(3, "Username must be at least 3 characters")
       .regex(/^[a-zA-Z0-9._]+$/, "Username can only contain letters, numbers, dots and underscores"),
     email: z.string().email("Enter a valid email address"),
+    phoneNumber: z.string().min(1, "Phone number is required"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -93,12 +93,14 @@ function PasswordField({
   label,
   value,
   error,
+  helperText,
   onChange,
   autoComplete,
 }: {
   label: string;
   value: string;
   error?: string;
+  helperText?: string;
   onChange: (value: string) => void;
   autoComplete?: string;
 }) {
@@ -125,38 +127,9 @@ function PasswordField({
           {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
         </button>
       </div>
+      {helperText ? <p className="text-xs text-muted-foreground">{helperText}</p> : null}
     </AuthField>
   );
-}
-
-function RequirementItem({
-  label,
-  met,
-}: {
-  label: string;
-  met: boolean;
-}) {
-  return (
-    <li
-      className={cn(
-        "flex items-center gap-2 text-xs font-medium transition-colors",
-        met ? "text-success" : "text-muted-foreground"
-      )}
-    >
-      <CheckCircle2 className={cn("size-4 shrink-0", met ? "text-success" : "text-muted-foreground")} />
-      <span>{label}</span>
-    </li>
-  );
-}
-
-function getPasswordRules(password: string) {
-  return {
-    minLength: password.length >= 8,
-    upper: /[A-Z]/.test(password),
-    lower: /[a-z]/.test(password),
-    number: /[0-9]/.test(password),
-    special: /[^A-Za-z0-9]/.test(password),
-  };
 }
 
 export function RegisterForm() {
@@ -172,6 +145,7 @@ export function RegisterForm() {
       lastName: "",
       username: "",
       email: "",
+      phoneNumber: "",
       password: "",
       confirmPassword: "",
       terms: false,
@@ -181,7 +155,6 @@ export function RegisterForm() {
   const passwordValue = useWatch({ control: form.control, name: "password" }) ?? "";
   const confirmPassword = useWatch({ control: form.control, name: "confirmPassword" }) ?? "";
   const usernameValue = useWatch({ control: form.control, name: "username" }) ?? "";
-  const passwordRules = getPasswordRules(passwordValue);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -208,7 +181,6 @@ export function RegisterForm() {
     form.formState.isValid &&
     usernameState !== "checking" &&
     usernameState !== "unavailable" &&
-    Object.values(passwordRules).every(Boolean) &&
     passwordValue === confirmPassword;
 
   return (
@@ -270,10 +242,24 @@ export function RegisterForm() {
             <Input {...form.register("email")} type="email" autoComplete="email" placeholder="you@example.com" />
           </AuthField>
 
+          <AuthField
+            label="Phone Number"
+            required
+            error={form.formState.errors.phoneNumber?.message}
+          >
+            <Input
+              {...form.register("phoneNumber")}
+              type="tel"
+              autoComplete="tel"
+              placeholder="+91 XXXXX XXXXX"
+            />
+          </AuthField>
+
           <PasswordField
             label="Password"
             value={passwordValue}
             error={form.formState.errors.password?.message}
+            helperText="Password must contain at least 8 characters, including an uppercase letter, lowercase letter, number, and special character."
             onChange={(value) => form.setValue("password", value, { shouldValidate: true, shouldDirty: true })}
             autoComplete="new-password"
           />
@@ -287,14 +273,6 @@ export function RegisterForm() {
             }
             autoComplete="new-password"
           />
-
-          <ul className="grid gap-2 rounded-2xl border border-border bg-background p-4">
-            <RequirementItem label="Minimum 8 characters" met={passwordRules.minLength} />
-            <RequirementItem label="One uppercase letter" met={passwordRules.upper} />
-            <RequirementItem label="One lowercase letter" met={passwordRules.lower} />
-            <RequirementItem label="One number" met={passwordRules.number} />
-            <RequirementItem label="One special character" met={passwordRules.special} />
-          </ul>
 
           <div className="space-y-1.5">
             <label className="flex items-start gap-3 text-sm text-muted-foreground">

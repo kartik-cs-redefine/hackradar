@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Navbar } from "@/components/layout/navbar";
@@ -103,6 +105,32 @@ function SectionCard({
       <h2 className="text-lg font-semibold tracking-tight text-foreground">{title}</h2>
       <div className="mt-5">{children}</div>
     </Card>
+  );
+}
+
+function TelegramQrCard() {
+  return (
+    <div className="mx-auto w-full max-w-sm rounded-3xl border border-border/70 bg-background p-4 shadow-[0_18px_40px_rgba(0,0,0,0.04)] dark:bg-slate-950/55">
+      <div className="rounded-2xl bg-white p-4 dark:bg-white">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-slate-900">@hackradar_alerts_bot</p>
+            <p className="text-xs text-slate-500">Official HackRadar Telegram Bot</p>
+          </div>
+        </div>
+
+        <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white p-3">
+          <Image
+            src="/telegram-qr.png"
+            alt="Official HackRadar Telegram QR code"
+            width={220}
+            height={220}
+            className="h-auto w-full rounded-xl object-contain"
+            priority
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -252,7 +280,31 @@ export default function ProfilePage() {
                   >
                     {item}
                   </button>
-                ))}
+                  ))}
+                </div>
+              </SectionCard>
+
+              <SectionCard title="Telegram Alerts">
+                <div className="space-y-5">
+                  <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+                    Stay updated with instant HackRadar notifications directly on Telegram.
+                    Receive reminders for registration deadlines, submission deadlines, PPT deadlines, result announcements,
+                    personalized hackathon alerts and AI-powered reminders in the future.
+                  </p>
+
+                  <TelegramQrCard />
+
+                  <div className="mx-auto flex max-w-sm flex-col items-stretch gap-3">
+                    <Button asChild className="h-12 w-full gap-2 px-5">
+                      <Link href="https://t.me/hackradar_alerts_bot" target="_blank" rel="noopener noreferrer">
+                        Connect Telegram Bot
+                        <ArrowUpRight className="size-4" />
+                      </Link>
+                    </Button>
+                    <p className="text-center text-xs leading-5 text-muted-foreground">
+                      Scan the QR code or click the button to connect with the official HackRadar Telegram Bot.
+                    </p>
+                  </div>
                 </div>
               </SectionCard>
 
